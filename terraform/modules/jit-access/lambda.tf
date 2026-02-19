@@ -20,14 +20,28 @@ resource "aws_cloudwatch_log_group" "reconciler_lambda" {
 }
 
 ########################################
+# S3 object lookups (used to detect code changes via ETag)
+########################################
+data "aws_s3_object" "api_lambda" {
+  bucket = var.lambda_artifact_bucket
+  key    = var.api_lambda_s3_key
+}
+
+data "aws_s3_object" "reconciler_lambda" {
+  bucket = var.lambda_artifact_bucket
+  key    = var.reconciler_lambda_s3_key
+}
+
+########################################
 # API Lambda
 ########################################
 resource "aws_lambda_function" "jit_api" {
   function_name = "${var.environment}-jit-api"
   description   = "JIT Access Controller API – handles access requests, approvals, grants, and revocations."
 
-  s3_bucket = var.lambda_artifact_bucket
-  s3_key    = var.api_lambda_s3_key
+  s3_bucket        = var.lambda_artifact_bucket
+  s3_key           = var.api_lambda_s3_key
+  source_code_hash = data.aws_s3_object.api_lambda.etag
 
   handler = "bootstrap"
   runtime = "provided.al2023"
@@ -78,8 +92,9 @@ resource "aws_lambda_function" "jit_reconciler" {
   function_name = "${var.environment}-jit-reconciler"
   description   = "JIT Access Reconciler – periodically checks and revokes expired access assignments."
 
-  s3_bucket = var.lambda_artifact_bucket
-  s3_key    = var.reconciler_lambda_s3_key
+  s3_bucket        = var.lambda_artifact_bucket
+  s3_key           = var.reconciler_lambda_s3_key
+  source_code_hash = data.aws_s3_object.reconciler_lambda.etag
 
   handler = "bootstrap"
   runtime = "provided.al2023"
