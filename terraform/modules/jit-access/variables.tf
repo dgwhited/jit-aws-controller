@@ -4,8 +4,33 @@ variable "environment" {
 }
 
 variable "permission_set_arn" {
-  description = "ARN of the global JIT-Admin SSO permission set."
+  description = "ARN of an existing SSO permission set. Required when create_permission_set is false."
   type        = string
+  default     = ""
+}
+
+variable "create_permission_set" {
+  description = "Whether to create a new SSO permission set for JIT access."
+  type        = bool
+  default     = false
+}
+
+variable "permission_set_name" {
+  description = "Name of the SSO permission set to create (only used when create_permission_set is true)."
+  type        = string
+  default     = "JIT-Admin"
+}
+
+variable "permission_set_session_duration" {
+  description = "Maximum session duration for the JIT permission set (ISO 8601)."
+  type        = string
+  default     = "PT1H"
+}
+
+variable "permission_set_managed_policy_arns" {
+  description = "List of AWS managed policy ARNs to attach to the JIT permission set."
+  type        = list(string)
+  default     = ["arn:aws:iam::aws:policy/AdministratorAccess"]
 }
 
 variable "plugin_webhook_url" {

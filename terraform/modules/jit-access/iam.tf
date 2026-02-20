@@ -5,6 +5,8 @@ locals {
   account_id = data.aws_caller_identity.current.account_id
   region     = data.aws_region.current.name
 
+  permission_set_arn = var.create_permission_set ? aws_ssoadmin_permission_set.jit[0].arn : var.permission_set_arn
+
   dynamodb_table_arns = [
     aws_dynamodb_table.jit_config.arn,
     aws_dynamodb_table.jit_requests.arn,
