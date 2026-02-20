@@ -59,7 +59,7 @@ resource "aws_lambda_function" "jit_api" {
       TABLE_NONCES                = aws_dynamodb_table.jit_nonces.name
       SSO_INSTANCE_ARN            = var.sso_instance_arn
       IDENTITY_STORE_ID           = var.identity_store_id
-      PERMISSION_SET_ARN          = var.permission_set_arn
+      PERMISSION_SET_ARN          = local.permission_set_arn
       SIGNING_SECRET_ARN          = aws_secretsmanager_secret.signing_key.arn
       PLUGIN_WEBHOOK_URL          = var.plugin_webhook_url
       CALLBACK_SIGNING_SECRET_ARN = aws_secretsmanager_secret.callback_signing_key.arn
@@ -112,7 +112,7 @@ resource "aws_lambda_function" "jit_reconciler" {
       TABLE_NONCES                = aws_dynamodb_table.jit_nonces.name
       SSO_INSTANCE_ARN            = var.sso_instance_arn
       IDENTITY_STORE_ID           = var.identity_store_id
-      PERMISSION_SET_ARN          = var.permission_set_arn
+      PERMISSION_SET_ARN          = local.permission_set_arn
       SIGNING_SECRET_ARN          = aws_secretsmanager_secret.signing_key.arn
       PLUGIN_WEBHOOK_URL          = var.plugin_webhook_url
       CALLBACK_SIGNING_SECRET_ARN = aws_secretsmanager_secret.callback_signing_key.arn

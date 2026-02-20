@@ -42,3 +42,8 @@ output "artifact_bucket_name" {
   description = "Name of the S3 artifact bucket (empty if not created)."
   value       = var.create_artifact_bucket ? aws_s3_bucket.artifacts[0].id : ""
 }
+
+output "permission_set_arn" {
+  description = "ARN of the JIT permission set (created or provided)."
+  value       = local.permission_set_arn
+}
