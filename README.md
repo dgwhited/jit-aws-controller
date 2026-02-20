@@ -35,12 +35,15 @@ Infrastructure is defined in `terraform/modules/jit-access/`. This module provis
 ## Development
 
 ```sh
-# Build both Lambda binaries
-go build -o bootstrap ./cmd/api
-go build -o bootstrap ./cmd/reconciler
-
 # Run tests
 go test -v -race ./...
+
+# Build Lambda binaries (Linux amd64, static)
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o bootstrap ./cmd/api
+zip jit-api.zip bootstrap
+
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o bootstrap ./cmd/reconciler
+zip jit-reconciler.zip bootstrap
 
 # Validate Terraform
 cd terraform/modules/jit-access
