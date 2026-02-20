@@ -4,6 +4,10 @@ Serverless backend for JIT AWS access management via IAM Identity Center.
 
 This controller is designed to work with the [mattermost-plugin-aws-jit-access](https://github.com/dgwhited/jit-mm-plugin) Mattermost plugin, which provides the chat-based interface for requesting and approving temporary AWS access. The plugin sends requests to this controller's API, and this controller sends webhook notifications back to the plugin on state transitions.
 
+## Demo
+
+![JIT Access Demo](demo.gif)
+
 ## Architecture
 
 - **API Lambda** (`cmd/api`) -- Handles all HTTP requests through API Gateway V2.
